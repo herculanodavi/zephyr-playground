@@ -1,5 +1,5 @@
 / {
     chosen {
-        app-led = &led0;
+        app-led = &green_led_2;
     };
 };
