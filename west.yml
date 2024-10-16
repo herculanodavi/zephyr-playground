@@ -3,13 +3,12 @@ manifest:
     - name: zephyrproject-rtos
       url-base: https://github.com/zephyrproject-rtos
 
-  defaults:
-    remote: zephyrproject-rtos
-    revision: main
-
   projects:
     - name: zephyr
       remote: zephyrproject-rtos
-      repo-path: zephyr
       revision: main
-      import: true
+      import:
+        name-allowlist:
+          - cmsis     
+          - hal_nordic 
+          - hal_stm32 
