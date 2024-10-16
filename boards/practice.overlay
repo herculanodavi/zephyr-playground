@@ -1,0 +1,25 @@
+/ {
+label_a: node_a { /* Empty. */ };
+
+label_b: node_b {};
+
+node_refs {
+  phandle-by-path = <&{/node_a}>;
+  phandle-by-label = <&label_a>;
+  phandles = <&{/node_a} &label_b>;
+};
+
+unit_address: unit-address@1babaca {
+    reg = <0x01babaca 0x100>;
+};
+
+other_node: other-node@2babaca {
+    #address-cells = <1>;
+    #size-cells = <0>;
+    reg = <0x02babaca 0x100>;
+};
+};  
+
+&other_node {
+    instance: instance@1 { reg = <0x10>; };
+};
