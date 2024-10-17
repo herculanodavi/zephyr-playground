@@ -1,10 +1,13 @@
 #include <zephyr/drivers/gpio.h>
+#include <zephyr/drivers/i2c.h>
 #include <zephyr/kernel.h>
 
 #define SLEEP_TIME_MS 1000U
 #define LED_NODE      DT_CHOSEN(app_led)
+#define IMU_NODE      DT_ALIAS(imu_i2c)
 
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
+static const struct device* imu_i2c_dev = DEVICE_DT_GET(IMU_NODE);
 
 int main(void)
 {
@@ -20,6 +23,6 @@ int main(void)
         (void) gpio_pin_toggle_dt(&led);
         k_msleep(SLEEP_TIME_MS);
     }
-
+ 
     return 0;
 }

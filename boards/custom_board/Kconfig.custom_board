@@ -1,0 +1,2 @@
+config BOARD_CUSTOM_BOARD
+        select SOC_STM32F303XE
