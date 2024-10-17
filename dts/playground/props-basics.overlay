@@ -1,0 +1,7 @@
+/ {
+    node_with_props {
+      compatible = "custom-props-basics";
+      int = <1>;
+      string = "foo";
+    };
+  };
