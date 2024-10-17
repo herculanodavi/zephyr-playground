@@ -12,3 +12,5 @@ properties:
     type: phandle
   phandles:
     type: phandles
+  phandle-array-of-refs:
+    type: phandle-array

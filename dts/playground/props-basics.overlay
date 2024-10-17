@@ -1,7 +1,12 @@
 / {
-    node_with_props {
+    label_with_props: node_with_props {
       compatible = "custom-props-basics";
+      existent-boolean;
       int = <1>;
       string = "foo";
     };
+  };
+
+  &label_with_props {
+    /delete-property/ existent-boolean;
   };
