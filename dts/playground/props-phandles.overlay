@@ -1,0 +1,17 @@
+/{
+    label_a: node_a { /* Empty. */ };
+    label_b: node_b { /* Empty. */ };
+
+    node_refs {
+        compatible = "custom-props-phandles";
+
+        path-by-path = &{/node_a};
+        path-by-label = &label_a;
+
+        phandle-by-path = <&{/node_a}>;
+        phandle-by-label = <&label_a>;
+
+        // Simple array of phandles
+        phandles = <&{/node_a} &label_b>;
+    };
+};
