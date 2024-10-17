@@ -1,0 +1,15 @@
+identifier: custom_board
+name: My Custom Board
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+ram: 80
+flash: 512
+supported:
+  - gpio
+  - counter
+  - i2c
+  - spi
