@@ -1,0 +1,14 @@
+description: Custom properties
+compatible: "custom-props-phandles"
+
+properties:
+  path-by-path:
+    type: path
+  path-by-label:
+    type: path
+  phandle-by-path:
+    type: phandle
+  phandle-by-label:
+    type: phandle
+  phandles:
+    type: phandles
