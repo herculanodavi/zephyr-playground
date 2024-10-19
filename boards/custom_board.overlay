@@ -2,4 +2,20 @@
     chosen {
         app-led = &green_led_2;
     };
+
+    aliases {
+        rtc-node = &ds1370;
+    };
+};
+
+&i2c1 {
+    pinctrl-0 = <&i2c1_scl_pb8 &i2c1_sda_pb9>;
+    pinctrl-names = "default";
+    clock-frequency = <400000>;
+    status = "okay";
+
+    ds1370: ds1307@68 {
+        compatible = "maxim,ds1307";
+        reg = <0x68>;
+    };
 };
