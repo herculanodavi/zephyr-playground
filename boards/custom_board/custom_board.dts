@@ -15,6 +15,11 @@
         zephyr,flash = &flash0;
     };
 
+    aliases {
+		led0 = &green_led_2;
+		sw0 = &user_button;
+	};
+
 	leds: leds {    
 		compatible = "gpio-leds";
 		green_led_2: led_2 {
@@ -30,12 +35,6 @@
 			gpios = <&gpioc 13 GPIO_ACTIVE_LOW>;
 			zephyr,code = <INPUT_KEY_0>;
 		};
-	};
-
-	aliases {
-		led0 = &green_led_2;
-		sw0 = &user_button;
-        imu-i2c = &i2c2;
 	};
 };
 
@@ -62,13 +61,6 @@
     apb2-prescaler = <1>;
     adc12-prescaler = <1>;
     adc34-prescaler = <1>;
-};
-
-&i2c2 {
-    pinctrl-0 = <&i2c2_scl_pa9 &i2c2_sda_pa10>;
-    pinctrl-names = "default";
-    clock-frequency = <400000>;
-    status = "okay";
 };
 
 &usart2 {
