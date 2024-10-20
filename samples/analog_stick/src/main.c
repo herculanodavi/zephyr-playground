@@ -11,6 +11,7 @@
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 #include <zephyr/drivers/adc.h>
+#include <zephyr/drivers/gpio.h>
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 #include <zephyr/sys/util.h>
@@ -27,6 +28,9 @@
 static const struct adc_dt_spec adc_channels[] = {
     DT_FOREACH_PROP_ELEM(DT_PATH(zephyr_user), io_channels,
                          DT_SPEC_AND_COMMA)};
+
+#define STICK_BUTTON_NODE	DT_ALIAS(stick_button)
+static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET(STICK_BUTTON_NODE, gpios);
 
 int main(void)
 {
@@ -58,52 +62,36 @@ int main(void)
         }
     }
 
+	err = gpio_pin_configure_dt(&button, GPIO_INPUT);
+	if (err != 0) {
+		printk("Error %d: failed to configure %s pin %d\n",
+		       err, button.port->name, button.pin);
+		return 0;
+	}
+
+    int32_t axes[2];
+    int button_press;
     while (1)
     {
         printk("ADC reading[%u]:\n", count++);
+
         for (size_t i = 0U; i < ARRAY_SIZE(adc_channels); i++)
         {
-            int32_t val_mv;
-
-            printk("- %s, channel %d: ",
-                   adc_channels[i].dev->name,
-                   adc_channels[i].channel_id);
-
             (void)adc_sequence_init_dt(&adc_channels[i], &sequence);
-
             err = adc_read_dt(&adc_channels[i], &sequence);
             if (err < 0)
             {
                 printk("Could not read (%d)\n", err);
                 continue;
             }
-
-            /*
-             * If using differential mode, the 16 bit value
-             * in the ADC sample buffer should be a signed 2's
-             * complement value.
-             */
-            if (adc_channels[i].channel_cfg.differential)
-            {
-                val_mv = (int32_t)((int16_t)buf);
-            }
-            else
-            {
-                val_mv = (int32_t)buf;
-            }
-            printk("%" PRId32, val_mv);
-            err = adc_raw_to_millivolts_dt(&adc_channels[i],
-                                           &val_mv);
-            /* conversion to mV may not be supported, skip if not */
-            if (err < 0)
-            {
-                printk(" (value in mV not available)\n");
-            }
-            else
-            {
-                printk(" = %" PRId32 " mV\n", val_mv);
-            }
+            axes[i] = ((int32_t) buf * 100) / 4096;
         }
+
+        button_press = gpio_pin_get_dt(&button);
+
+        printk("X: %d%%\n", axes[0]);
+        printk("Y: %d%%\n", axes[1]);
+        printk("Button: %d\n", button_press);
 
         k_sleep(K_MSEC(200));
     }

@@ -9,6 +9,7 @@
 
     aliases {
         stick-adc = &adc1;
+        stick-button = &stick_button;
     };
 };
 
@@ -35,5 +36,13 @@
 		zephyr,reference = "ADC_REF_INTERNAL";
 		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
         zephyr,resolution = <12>;
+    };
+};
+
+&gpio_keys {
+    stick_button: stick-button {
+        label = "Stick button";
+        gpios = <&gpiob 0 GPIO_ACTIVE_LOW>;
+        zephyr,code = <INPUT_KEY_1>;
     };
 };
